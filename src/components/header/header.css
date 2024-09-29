@@ -11,6 +11,9 @@
   max-width: 1024px;
   margin: 20px 0px 100px 0px;
 }
+.headerContainer.listMode {
+  margin-bottom: 0;
+}
 
 .headerList {
   display: flex;
@@ -79,6 +82,7 @@
 .date {
   position: absolute;
   top: 50px;
+  z-index: 2;
 }
 
 .options {
@@ -89,6 +93,7 @@
   border-radius: 5px;
   box-shadow: 3px 4px 5px gray;
   padding: 10px;
+  z-index: 2;
 }
 
 .optionItem {
@@ -107,8 +112,15 @@
   font-size: 12px;
 }
 
-.optionCounterButton{
+.optionCounterButton {
   width: 30px;
   height: 30px;
   border: 1px solid #0071c2;
+  color: #0071c2;
+  cursor: pointer;
+  background-color: white;
+}
+
+.optionCounterButton:disabled {
+  cursor: not-allowed;
 }
