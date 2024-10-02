@@ -4,9 +4,18 @@ import MailList from "../../components/mailList/MailList";
 import Footer from "../../components/footer/Footer";
 import "./hotel.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircle,
+  faCircleArrowLeft,
+  faCircleArrowRight,
+  faCircleXmark,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 const Hotel = () => {
+  const [slideNumber, setSlideNumber] = useState(0);
+  const [open, setOpen] = useState(false);
   const photos = [
     {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/583656351.jpg?k=e7597eed1894120f783f6a4b7d49db55c73868eaa9e462f5afa3a94330d87ab7&o=&hp=1",
@@ -21,17 +30,57 @@ const Hotel = () => {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/583656745.jpg?k=b3b534a5b7d4e624bd535cdff08c015bef9b9a4d1c1df12926420375c4a5a615&o=&hp=1",
     },
     {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/443445347.jpg?k=0a6eb6c1c9c73b5bcd01f81a09c834286040a6ce7eb25782d2c82e2f65aba1a7&o=&hp=1",
-    },
-    {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/449309856.jpg?k=992cb47112dd4202954689b509f8fc685fc341361377bf965ec0d8a2363ff49e&o=&hp=1",
     },
+    {
+      src: "https://cf.bstatic.com/xdata/images/hotel/max1024x768/449308960.jpg?k=4aad7c3f7f35e9ff78ef1fbedc55bb4f13f2aef0286f45e47cab1c9cfc53193b&o=&hp=1",
+    },
   ];
+  const handleOpen = (idx) => {
+    setOpen(true);
+    setSlideNumber(idx);
+  };
+
+  const handleMove = (direction) => {
+    let newSlideNumber;
+    if (direction === "l") {
+      newSlideNumber = slideNumber === 0 ? photos.length - 1 : slideNumber - 1;
+    } else {
+      newSlideNumber = slideNumber === photos.length - 1 ? 0 : slideNumber + 1;
+    }
+    setSlideNumber(newSlideNumber);
+  };
   return (
     <div className="hotel">
       <Navbvar />
       <Header type="list" />
       <div className="hotelContainer">
+        {open && (
+          <div className="slider" style={{ userSelect: "none" }}>
+            <FontAwesomeIcon
+              icon={faCircleXmark}
+              className="close"
+              onClick={() => setOpen(false)}
+            />
+            <FontAwesomeIcon
+              icon={faCircleArrowLeft}
+              className="arrow"
+              onClick={() => handleMove("l")}
+            />
+            <div className="sliderWrapper">
+              <img
+                src={photos[slideNumber]?.src}
+                alt=""
+                className="sliderImg"
+              />
+            </div>
+            <FontAwesomeIcon
+              icon={faCircleArrowRight}
+              className="arrow"
+              onClick={() => handleMove("r")}
+            />
+          </div>
+        )}
         <div className="hotelWrapper">
           <button className="bookNow">Reserve or Book Now!</button>
           <h1 className="hotelTitle">Grand Hotel</h1>
@@ -44,9 +93,14 @@ const Hotel = () => {
           </span>
           <span className="hotelPriceHighlight">EL old 2356 town New York</span>
           <div className="hotelImages">
-            {photos.map((img) => (
+            {photos.map((img, idx) => (
               <div className="hotelImgWrapper">
-                <img src={img.src} alt="kuch" className="hotelImg" />
+                <img
+                  onClick={() => handleOpen(idx)}
+                  src={img.src}
+                  alt="kuch"
+                  className="hotelImg"
+                />
               </div>
             ))}
           </div>
@@ -76,8 +130,8 @@ const Hotel = () => {
             </div>
           </div>
         </div>
-      <MailList />
-      <Footer />
+        <MailList />
+        <Footer />
       </div>
     </div>
   );
